@@ -1,15 +1,17 @@
 function updateTime() {
   let tokyoElement = document.querySelector("#tokyo");
-  let tokyoTimeElement = tokyoElement.querySelector(".time");
-  let tokyoDateElement = tokyoElement.querySelector(".date");
+  if (tokyoElement) {
+    let tokyoTimeElement = tokyoElement.querySelector(".time");
+    let tokyoDateElement = tokyoElement.querySelector(".date");
 
-  let tokyoTime = moment().tz("Asia/Tokyo");
-  tokyoDateElement.innerHTML = tokyoTime.format("MMMM Do YYYY");
-  tokyoTimeElement.innerHTML = tokyoTime.format("h:mm:ss [<small>]A[<small/]>");
+    let tokyoTime = moment().tz("Asia/Tokyo");
+    tokyoDateElement.innerHTML = tokyoTime.format("MMMM Do YYYY");
+    tokyoTimeElement.innerHTML = tokyoTime.format("h:mm:ss [<small>]A[<small/]>");
 
+  }
 
-
-  let johannesburgElement = document.querySelector("#johannesburg")
+  let johannesburgElement = document.querySelector("#johannesburg");
+  if (johannesburgElement) { 
   let johannesburgTimeElement = johannesburgElement.querySelector(".time")
   let johannesburgDateElement = johannesburgElement.querySelector(".date");
 
@@ -18,7 +20,30 @@ function updateTime() {
   johannesburgTimeElement.innerHTML = johannesburgTime.format(
     "h:mm:ss [<small>]A[<small/]>"
   );
+}
+}
 
+
+
+
+function updateCity(event) {
+  let cityTimeZone = event.target.value;
+  let cityName = cityTimeZone.replace("_", " ").split("/")[1];
+  let cityTime = moment().tz(cityTimeZone);
+  let citiesElement = document.querySelector("#cities");
+  citiesElement.innerHTML = `
+  
+  <div class="city">
+  <div>
+    <h2>${cityName}</h2>
+    <div class="date">${cityTime.format("MMMM Do YYYY")}</div>
+  </div>
+  <div class="time">${cityTime.format("h:mm:ss")}<small>${cityTime.format("A")}</small></div>`;
 }
 updateTime();
-setInterval(updateTime,1000)
+setInterval(updateTime, 1000);
+
+
+
+let citiesSelectElement = document.querySelector("#city")
+citiesSelectElement.addEventListener("change",updateCity) 
